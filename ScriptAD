@@ -1,0 +1,13 @@
+$name = Get-Content -Path "the path to the file.txt" #Чтение и файла usernames и запись их в переменную
+Remove-item -Path "the path to the file.cvs"# Удаление результрующего файла для новой итерации скрипта
+foreach ($name1 in $name) { # перебор значений из переменной name  в переменную name1
+    $tmp_people = Get-ADUser -identity $name1 -Properties Title # запись запроса в AD с параметром Title в переменную name1
+    if($(get-ADUser -identity $name1  -Properties Title) -eq $null){ # если запрашиваемая УЗ которая содержиться в name1 не существует, тое сть равна значению null
+        $YYY = "" + "$name1" + ";" + "" + ";" # то записать в переменную YYY данную УЗ в первый столбец который перед разделителем ;
+    } else { # иначе
+        $YYY = "" + ($tmp_people.UserPrincipalName).toString() + ";" + ($tmp_people.Title).toString() + ";" # записать в переменную YYY данную УЗ если она существует в AD с параментрами УЗ и должность в 1 и 2 столбец с разделителями ;
+    }
+    Add-Content -Value $YYY -Path "the path to the file.cvs" #добавить значение содержащееся в переменной YYY в файл.csv
+    $tmp_people = "" # Обнуление переменной для избежания заполнения пустых строк предыдущими значениями содержащимися в переменной
+    $YYY = "" # Обнуление переменной для избежания заполнения пустых строк предыдущими значениями содержащимися в переменной
+}
