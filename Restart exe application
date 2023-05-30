@@ -1,0 +1,17 @@
+$cfile = "C:\EMS\ems_log\EMS_dat.dat" #Запись данных файла в переменную
+(Get-Item $cfile).Length | SC C:\trap-dat\Trap-DatTest\PowerSchellScripts\datsize1.txt # Получение значения длины переменной $cfile
+(Get-Item $cfile).LastWriteTime.ToString("dd.MM.yyyy.HH:mm") | SC C:\trap-dat\Trap-DatTest\PowerSchellScripts\date1.txt # Получение значения даты переменной $cfile
+$size1 = "C:\trap-dat\Trap-DatTest\PowerSchellScripts\datsize1.txt" # Запись длины переменной в файл datsize1.txt
+$date1 = "C:\trap-dat\Trap-DatTest\PowerSchellScripts\date1.txt" # Запись даты переменной в файл datsize1.txt
+Wait-Event -Timeout 300 # Пауза в выполнении скрипта 5 минут
+(Get-Item $cfile).Length | SC C:\trap-dat\Trap-DatTest\PowerSchellScripts\datsize2.txt # Получение значения длины переменной $cfile
+(Get-Item $cfile).LastWriteTime.ToString("dd.MM.yyyy.HH:mm") | SC C:\trap-dat\Trap-DatTest\PowerSchellScripts\date2.txt # Получение значения даты переменной $cfile
+$size2 = "C:\trap-dat\Trap-DatTest\PowerSchellScripts\datsize1.txt" # Запись длины переменной в файл datsize2.txt
+$date2 = "C:\trap-dat\Trap-DatTest\PowerSchellScripts\date1.txt" # Запись даты переменной в файл datsize2.txt
+if ($size1 -eq $size2){ # Условие выполнения
+Get-Process | Where-Object { $_.Name -eq "service" } | Select-Object -First 1 | Stop-Process -Force # Поиск процесса, выбор объекта, остановка процесса
+Remove-item C:\Logsender\cache\* # удаление файлов из папки  cache
+Wait-Event -Timeout 10  # Пауза в выполнении скрипта
+Start-Process 'C:\Logsender\runservice.bat' # Запуск service.exe через  C:\Logsender\runservice.bat
+}
+$date1 | Out-File C:\trap-dat\Trap-DatTest\PowerSchellScripts\Output.txt # Сообщение для вывода свидетельствующие, что все строки скрипта были исполнены
