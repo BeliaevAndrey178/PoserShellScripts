@@ -1,0 +1,18 @@
+$tempfolders = "C:\EMS\pmon\*\*.pmon" # Анализ папки Pmon и запись в переменную
+$age = (Get-Date).AddDays(-31) # Запись в переменную значений файлов , которые имеют дату последнего изменения более 31 дня 
+Get-Item -Path $tempfolders | foreach { #получение значения их переменной и переход к циклу foreach для перебора содержимого 
+if ($_.LastWriteTime -le $age){ # Условие если последняя дата изменения файла больше или равно переменной $age
+                   
+            # remove the item
+            Remove-Item $_.Fullname -Recurse -Force -Verbose # удаление файлов  старше 31 дня
+        }
+}
+
+
+$tempfolders = "C:\EMS\rmon\rmon\*\*.rmon" # Анализ папки Rmon и запись в переменную
+$age = (Get-Date).AddDays(-31) # Запись в переменную значений файлов , которые имеют дату последнего изменения более 31 дня
+Get-Item -Path $tempfolders | foreach { #получение значения их переменной и переход к циклу foreach для перебора содержимого
+if ($_.LastWriteTime -le $age){ # Условие если последняя дата изменения файла больше или равно переменной $age
+                   
+            # remove the item
+            Remove-Item $_.Fullname -Recurse -Force -Verbose # удаление файлов  старше 31 дня
